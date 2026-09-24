@@ -14,10 +14,12 @@ remain keyboard-focusable for their tooltips. Add real store links when released
 
 ## Cloudflare Pages
 
-The `forum-index-website` Pages project is connected through Cloudflare's native
-GitHub integration. Pushes to `main` automatically deploy production; other
-branches receive preview deployments. No GitHub Actions workflow or API secret
-is needed. Project settings:
+The `forum-index-website` Pages project builds from this GitHub repository.
+The workflow in `.github/workflows/deploy.yml` triggers a Pages build on every
+push to `main`, using the `CLOUDFLARE_DEPLOY_HOOK` repository secret. The hook is
+restricted to deploying this project's `main` branch; no Cloudflare account token
+is stored in GitHub. The workflow confirms the build was queued; completion and
+build logs are available in the Cloudflare Pages dashboard. Project settings:
 
 | Setting | Value |
 | --- | --- |
