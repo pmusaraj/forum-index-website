@@ -36,11 +36,10 @@ manually, run the **Deploy to Cloudflare Pages** workflow in GitHub Actions.
 To rotate the hook, create a new `main` deploy hook in Pages settings and replace
 the `CLOUDFLARE_DEPLOY_HOOK` GitHub Actions secret with its URL.
 
-`theforumindex.com` is associated with the Pages project. Its Cloudflare DNS zone
-must have a proxied `CNAME` record named `@` targeting
-`forum-index-website.pages.dev`. The CLI OAuth session used for setup has Pages
-permissions but cannot manage DNS, so this record must be confirmed in the
-Cloudflare dashboard. Pages provisions HTTPS after domain validation.
+`theforumindex.com` is associated with the Pages project and serves the landing
+page over HTTPS. Its Cloudflare DNS zone has a proxied `CNAME` record named `@`
+targeting `forum-index-website.pages.dev`. Manage this record in the Cloudflare
+dashboard; the CLI OAuth session used for setup does not have DNS permissions.
 
 References: [Git integration](https://developers.cloudflare.com/pages/get-started/git-integration/)
 and [custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/).
