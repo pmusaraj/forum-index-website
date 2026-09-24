@@ -8,6 +8,8 @@ Production domain: https://theforumindex.com.
 Run `python3 -m http.server 8080 --directory public` and open http://localhost:8080.
 Edit `public/index.html` and `public/styles.css` directly; no build is required.
 The logo and icon come from the adjacent `forum-index-app` repository.
+The angled app preview uses an AI-edited mock screenshot with fictional technology
+topics, rather than real forum content or personal reading activity.
 
 The store buttons are intentionally inert and use `aria-disabled="true"` so they
 remain keyboard-focusable for their tooltips. Add real store links when released.
