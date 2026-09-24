@@ -14,7 +14,10 @@ remain keyboard-focusable for their tooltips. Add real store links when released
 
 ## Cloudflare Pages
 
-Use Cloudflare Pages' native GitHub integration with these settings:
+The `forum-index-website` Pages project is connected through Cloudflare's native
+GitHub integration. Pushes to `main` automatically deploy production; other
+branches receive preview deployments. No GitHub Actions workflow or API secret
+is needed. Project settings:
 
 | Setting | Value |
 | --- | --- |
@@ -24,16 +27,13 @@ Use Cloudflare Pages' native GitHub integration with these settings:
 | Build command | `exit 0` |
 | Build output directory | `public` |
 
-In Cloudflare, open **Workers & Pages → Create application → Pages → Connect to Git**,
-select the repository, and apply these settings. If prompted, authorize the
-Cloudflare GitHub app for this repository. Pushes to `main` will deploy production;
-other branches get preview deployments. No GitHub Actions workflow or API secret
-is needed.
+Pages URL: https://forum-index-website.pages.dev.
 
-After the first deployment, open **Custom domains → Set up a custom domain** and
-add `theforumindex.com`. Since the zone is already in Cloudflare, confirm the DNS
-record Cloudflare proposes. Associate the domain with Pages before adding a DNS
-record manually.
+`theforumindex.com` is associated with the Pages project. Its Cloudflare DNS zone
+must have a proxied `CNAME` record named `@` targeting
+`forum-index-website.pages.dev`. The CLI OAuth session used for setup has Pages
+permissions but cannot manage DNS, so this record must be confirmed in the
+Cloudflare dashboard. Pages provisions HTTPS after domain validation.
 
 References: [Git integration](https://developers.cloudflare.com/pages/get-started/git-integration/)
 and [custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/).
