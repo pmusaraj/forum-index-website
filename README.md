@@ -31,6 +31,11 @@ build logs are available in the Cloudflare Pages dashboard. Project settings:
 
 Pages URL: https://forum-index-website.pages.dev.
 
+Native Pages push triggers are disabled to avoid duplicate builds. To deploy
+manually, run the **Deploy to Cloudflare Pages** workflow in GitHub Actions.
+To rotate the hook, create a new `main` deploy hook in Pages settings and replace
+the `CLOUDFLARE_DEPLOY_HOOK` GitHub Actions secret with its URL.
+
 `theforumindex.com` is associated with the Pages project. Its Cloudflare DNS zone
 must have a proxied `CNAME` record named `@` targeting
 `forum-index-website.pages.dev`. The CLI OAuth session used for setup has Pages
