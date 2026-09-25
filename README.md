@@ -14,6 +14,18 @@ topics, rather than real forum content or personal reading activity.
 The store buttons are intentionally inert and use `aria-disabled="true"` so they
 remain keyboard-focusable for their tooltips. Add real store links when released.
 
+## Privacy policy
+
+The homepage links to `public/privacy/index.html`, served at `/privacy/`.
+The policy is a draft until the following are resolved:
+
+- Implement and verify a 90-day retention limit for contribution activity logs
+  in the backend, then update the policy to describe the enforced limit.
+- Confirm retention and deletion handling for device and contributor records.
+- Replace the TBD privacy contact with a dedicated email address.
+
+The website copy does not implement backend retention or deletion.
+
 ## Cloudflare Pages
 
 The `forum-index-website` Pages project uses Cloudflare's native GitHub integration.
