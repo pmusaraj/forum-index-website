@@ -6,10 +6,16 @@ Production domain: https://theforumindex.com.
 ## Local preview
 
 Run `python3 -m http.server 8080 --directory public` and open http://localhost:8080.
-Edit `public/index.html` and `public/styles.css` directly; no build is required.
+Edit `public/index.html`, `public/styles.css`, and `public/preview.js` directly; no build is required.
 The logo and icon come from the adjacent `forum-index-app` repository.
-The angled app preview uses an AI-edited mock screenshot with fictional technology
-topics, rather than real forum content or personal reading activity.
+The angled preview plays `public/assets/app-preview.mp4`, an actual iPhone
+simulator recording of the native app using its curated public-topic fixtures.
+The recording moves through lists and a native Markdown reader, changes between
+light and dark appearance, and returns to the opening list. It is edited for a
+quicker pace and a seamless loop, with the phone cropped a little below halfway.
+There are no playback controls. Reduced-motion preferences show the opening
+frame; playback pauses when off screen or in a hidden tab. The JPEG poster also
+provides a still preview when JavaScript or autoplay is unavailable.
 
 The Apple button links to the public TestFlight beta. The Google Play button is
 intentionally inert and uses `aria-disabled="true"` so it remains keyboard-focusable

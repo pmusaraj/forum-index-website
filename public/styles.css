@@ -24,9 +24,10 @@ button strong, .store-link strong { display: block; font-weight: 600; font-size:
 button:focus-visible { outline: 2px solid #008c95; outline-offset: 4px; }
 .tooltip { position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); z-index: 1; width: max-content; max-width: 260px; padding: 9px 12px; border-radius: 7px; background: #182c2d; color: white; font-size: 12px; visibility: hidden; }
 .store:hover .tooltip, .store:focus-within .tooltip { visibility: visible; }
-.app-preview { --preview-height: 340px; height: var(--preview-height); margin: 20px -24px 32px; padding-top: 42px; overflow: hidden; mask-image: linear-gradient(to bottom, #000 80%, transparent); }
+/* The viewport reveals about 60% of the phone, with a soft lower edge. */
+.preview-wrap { position: relative; margin: 20px -24px 32px; }
+.app-preview { --preview-height: 510px; height: var(--preview-height); padding-top: 42px; overflow: hidden; mask-image: linear-gradient(to bottom, #000 88%, transparent 100%); }
 .device { width: 390px; max-width: 76%; margin: 0 auto; padding: 8px; border: 2px solid #8c9291; border-radius: 56px; background: #1c2021; box-shadow: 12px 18px 40px #182c2d26, inset 0 0 0 2px #424848; transform: rotate(-9deg); transform-origin: 50% calc((var(--preview-height) - 42px) / 2); }
-.device img { display: block; width: 100%; height: auto; border-radius: 46px; }
 a { color: #006c73; text-underline-offset: 3px; }
 a:focus-visible { outline: 2px solid #008c95; outline-offset: 4px; }
 .site-footer { margin-top: 40px; font-size: 14px; }
@@ -35,12 +36,15 @@ a:focus-visible { outline: 2px solid #008c95; outline-offset: 4px; }
 .policy h2 { margin: 28px 0 8px; font-size: 21px; line-height: 1.3; }
 .policy p { margin: 0 0 16px; }
 .policy .policy-note { padding: 16px 20px; border: 1px solid #d5dcd7; border-radius: 12px; background: #edf0ec; }
+.app-recording { display: block; width: 100%; aspect-ratio: 1320 / 2868; object-fit: cover; border-radius: 46px; background: #faf8f3; }
+.app-recording img { display: block; width: 100%; }
 @media (max-width: 480px) {
   main { padding-top: 40px; }
   .logo { width: 210px; }
   .description { font-size: 16px; }
   .stores { flex-direction: column; align-items: center; }
-  .app-preview { --preview-height: 265px; margin-top: 24px; }
+  .preview-wrap { margin-top: 24px; }
+  .app-preview { --preview-height: min(450px, 110vw); }
   .device { padding: 6px; border-radius: 43px; }
-  .device img { border-radius: 35px; }
+  .app-recording { border-radius: 35px; }
 }
