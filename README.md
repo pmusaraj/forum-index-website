@@ -11,8 +11,9 @@ The logo and icon come from the adjacent `forum-index-app` repository.
 The angled app preview uses an AI-edited mock screenshot with fictional technology
 topics, rather than real forum content or personal reading activity.
 
-The store buttons are intentionally inert and use `aria-disabled="true"` so they
-remain keyboard-focusable for their tooltips. Add real store links when released.
+The Apple button links to the public TestFlight beta. The Google Play button is
+intentionally inert and uses `aria-disabled="true"` so it remains keyboard-focusable
+for its tooltip. Add the Google Play link when released.
 
 ## Privacy policy
 

@@ -13,11 +13,14 @@ h1 { font-size: clamp(38px, 7vw, 64px); line-height: 1.08; letter-spacing: -.05e
 .description { max-width: 540px; margin: 0 auto; font-size: 18px; line-height: 1.7; color: #5b6967; }
 .stores { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin-top: 38px; }
 .store { position: relative; }
-button { display: flex; align-items: center; gap: 12px; min-width: 190px; padding: 12px 20px; border: 1px solid #d5dcd7; border-radius: 12px; background: #edf0ec; color: #66716c; font: inherit; text-align: left; cursor: not-allowed; }
-button svg { width: 27px; height: 30px; flex-shrink: 0; }
-button svg:first-child:not([fill]) { fill: currentColor; }
-button small { display: block; font-size: 10px; line-height: 1.5; }
-button strong { display: block; font-weight: 600; font-size: 19px; line-height: 1.3; }
+button, .store-link { display: flex; align-items: center; gap: 12px; min-width: 190px; padding: 12px 20px; border: 1px solid #d5dcd7; border-radius: 12px; background: #edf0ec; color: #66716c; font: inherit; text-align: left; }
+button { cursor: not-allowed; }
+.store-link { background: #182c2d; border-color: #182c2d; color: #fff; text-decoration: none; }
+.store-link:hover { background: #294344; }
+button svg, .store-link svg { width: 27px; height: 30px; flex-shrink: 0; }
+button svg:first-child:not([fill]), .store-link svg:first-child:not([fill]) { fill: currentColor; }
+button small, .store-link small { display: block; font-size: 10px; line-height: 1.5; }
+button strong, .store-link strong { display: block; font-weight: 600; font-size: 19px; line-height: 1.3; }
 button:focus-visible { outline: 2px solid #008c95; outline-offset: 4px; }
 .tooltip { position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); z-index: 1; width: max-content; max-width: 260px; padding: 9px 12px; border-radius: 7px; background: #182c2d; color: white; font-size: 12px; visibility: hidden; }
 .store:hover .tooltip, .store:focus-within .tooltip { visibility: visible; }
