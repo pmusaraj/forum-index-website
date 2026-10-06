@@ -24,11 +24,9 @@ for its tooltip. Add the Google Play link when released.
 ## Privacy policy
 
 The homepage links to `public/privacy/index.html`, served at `/privacy/`.
-The policy is a draft until the following are resolved:
-
-- Implement and verify a 90-day retention limit for contribution activity logs
-  in the backend, then update the policy to describe the enforced limit.
-- Confirm retention and deletion handling for device and contributor records.
+The policy reflects the backend's [published privacy information](https://do3.musaraj.com/api/v2/privacy),
+version `2026-10-06`. Keep the website wording in sync with that source when data
+collection, retention, providers, or deletion behavior changes.
 
 The website copy does not implement backend retention or deletion.
 
