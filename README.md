@@ -29,7 +29,6 @@ The policy is a draft until the following are resolved:
 - Implement and verify a 90-day retention limit for contribution activity logs
   in the backend, then update the policy to describe the enforced limit.
 - Confirm retention and deletion handling for device and contributor records.
-- Replace the TBD privacy contact with a dedicated email address.
 
 The website copy does not implement backend retention or deletion.
 
