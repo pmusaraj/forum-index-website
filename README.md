@@ -17,9 +17,9 @@ There are no playback controls. Reduced-motion preferences show the opening
 frame; playback pauses when off screen or in a hidden tab. The JPEG poster also
 provides a still preview when JavaScript or autoplay is unavailable.
 
-The Apple button links to the public TestFlight beta. The Google Play button is
-intentionally inert and uses `aria-disabled="true"` so it remains keyboard-focusable
-for its tooltip. Add the Google Play link when released.
+The Apple button links to the public TestFlight beta. The Google Play button links
+to the Android beta opt-in page at
+https://play.google.com/apps/testing/com.musaraj.forumindex.
 
 ## Privacy policy
 
