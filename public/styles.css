@@ -41,6 +41,19 @@ a:focus-visible { outline: 2px solid #008c95; outline-offset: 4px; }
 .policy .policy-note { padding: 16px 20px; border: 1px solid #d5dcd7; border-radius: 12px; background: #edf0ec; }
 .app-recording { display: block; width: 100%; aspect-ratio: 1320 / 2868; object-fit: cover; border-radius: 46px; background: #faf8f3; }
 .app-recording img { display: block; width: 100%; }
+@media (min-width: 1025px) {
+  .home { position: relative; isolation: isolate; }
+  .home::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(0, 108, 115, .25) 1px, transparent 1.4px);
+    background-size: 22px 22px;
+    mask-image: linear-gradient(to right, #000, transparent 32%, transparent 68%, #000);
+  }
+}
 @media (max-width: 480px) {
   main { padding-top: 40px; }
   .logo { width: 210px; }
