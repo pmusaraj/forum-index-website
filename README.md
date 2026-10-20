@@ -1,6 +1,6 @@
 # Forum Index website
 
-A small, dependency-free landing page for the Forum Index iOS and Android apps.
+A small, dependency-free landing page for the Forum Index iOS, macOS and Android apps.
 Production domain: https://theforumindex.com.
 
 ## Local preview
