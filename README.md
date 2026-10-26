@@ -23,8 +23,7 @@ https://play.google.com/apps/testing/com.musaraj.forumindex.
 
 ## Web app
 
-`/app/` is a buildless web preview with trending discussions, subject filters,
-and pagination, embedded on the homepage under “Preview App” in a same-origin
+`/app/` is a buildless web preview with the first page of trending discussions and subject tabs, embedded on the homepage under “Preview App” in a same-origin
 iframe only when the homepage URL has `?q=v1`. Without that exact query value,
 the preview stays in an inert template: no iframe is loaded and no preview API
 requests are made. `/app/` remains directly accessible; this is a rollout switch,
@@ -47,7 +46,9 @@ only same-origin framing; other pages still disallow framing.
 
 The reader follows the mobile apps' shared colors (`#FAF6EE` / `#1C1C1A`, teal
 accents), 18px semibold titles, 36px forum icons, underlined subject tabs, and compact
-metadata. Dark mode follows the system preference. Forum icons load from public
+metadata. The header (including reader Back controls) stays sticky, and a translucent
+bottom bar explains the preview limitations. There is no subject dropdown or
+load-more control. Dark mode follows the system preference. Forum icons load from public
 HTTPS image hosts without a referrer; icons hosted on the backend use a globe
 fallback to avoid browser calls to that host.
 
