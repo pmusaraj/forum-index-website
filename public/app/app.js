@@ -1,4 +1,4 @@
-import { readerMarkdown } from './markdown.js';
+import { readerPosts, relativeDate } from './markdown.js';
 
 const $ = id => document.getElementById(id);
 let topics = [];
@@ -132,10 +132,12 @@ loadSubjects();
 load();
 
 let readerController;
+let readerDateTimer;
 let readerTrigger;
 let feedScroll = 0;
 async function openReader(topic, trigger) {
   readerController?.abort();
+  clearInterval(readerDateTimer);
   const current = new AbortController();
   readerController = current;
   readerTrigger = trigger;
@@ -161,15 +163,51 @@ async function openReader(topic, trigger) {
     const md = window.markdownit({ html: false, linkify: false });
     // No remote embeds or inline HTML. Resolve only ordinary HTTPS discussion links.
     md.renderer.rules.image = (tokens, index) => md.utils.escapeHtml(tokens[index].content || '[Image]');
-    const fragment = document.createElement('template');
-    fragment.innerHTML = md.render(readerMarkdown(data.markdown));
-    for (const link of fragment.content.querySelectorAll('a')) {
-      let href;
-      try { href = safeURL(new URL(link.getAttribute('href'), topic.url).href); } catch { /* invalid link */ }
-      if (!href) link.removeAttribute('href');
-      else { link.href = href; link.target = '_blank'; link.rel = 'noopener noreferrer'; }
-    }
-    $('reader-body').replaceChildren(fragment.content);
+    const posts = readerPosts(data.markdown).map(post => {
+      const section = element('section', 'reader-post');
+      if (post.username) {
+        const header = element('div', 'post-author');
+        const avatar = element('span', 'post-avatar');
+        avatar.setAttribute('aria-hidden', 'true');
+        avatar.innerHTML = '<svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="14" fill="currentColor" opacity=".15"/><circle cx="14" cy="10" r="5" fill="currentColor"/><path d="M5 26v-3a9 9 0 0 1 18 0v3" fill="currentColor"/></svg>';
+        const avatarURL = safeURL(post.avatar);
+        if (avatarURL) {
+          const image = element('img', '');
+          image.src = avatarURL;
+          image.alt = '';
+          image.loading = 'lazy';
+          image.referrerPolicy = 'no-referrer';
+          image.addEventListener('error', () => image.remove(), { once: true });
+          avatar.append(image);
+        }
+        header.append(avatar, element('span', 'post-username', `@${post.username}`));
+        if (post.publishedAt && relativeDate(post.publishedAt)) {
+          const date = new Date(post.publishedAt);
+          const time = element('time', 'post-date', relativeDate(post.publishedAt));
+          time.dateTime = date.toISOString();
+          time.title = date.toLocaleString(undefined, { dateStyle: 'full', timeStyle: 'short' });
+          time.setAttribute('aria-label', time.title);
+          header.append(time);
+        }
+        section.append(header);
+      }
+      const body = element('div', 'post-body');
+      const fragment = document.createElement('template');
+      fragment.innerHTML = md.render(post.markdown);
+      for (const link of fragment.content.querySelectorAll('a')) {
+        let href;
+        try { href = safeURL(new URL(link.getAttribute('href'), topic.url).href); } catch { /* invalid link */ }
+        if (!href) link.removeAttribute('href');
+        else { link.href = href; link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+      }
+      body.append(fragment.content);
+      section.append(body);
+      return section;
+    });
+    $('reader-body').replaceChildren(...posts);
+    readerDateTimer = setInterval(() => {
+      for (const time of $('reader-body').querySelectorAll('time')) time.textContent = relativeDate(time.dateTime);
+    }, 60000);
     $('reader-status').textContent = '';
   } catch (error) {
     if (error.name !== 'AbortError') $('reader-status').textContent = 'This discussion could not be loaded in the preview. Open it on the forum instead.';
@@ -177,6 +215,7 @@ async function openReader(topic, trigger) {
 }
 $('reader-back').addEventListener('click', () => {
   readerController?.abort();
+  clearInterval(readerDateTimer);
   $('reader').hidden = true;
   document.querySelector('.app-nav').hidden = false;
   document.querySelector('.reader-toolbar').hidden = true;

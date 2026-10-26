@@ -38,7 +38,10 @@ It never accepts an arbitrary target URL, follows redirects, or forwards visitor
 credentials. Responses must be Markdown and at most 512 KiB; successful responses
 are cached for at most one hour. Unsupported forums open externally, and reader
 failures offer an “Open on forum” link. The preview shows the returned page, not
-all subsequent reply pages. Embedded images are shown as their alt text.
+all subsequent reply pages. Embedded post images are shown as their alt text. Post headers follow the iOS
+reader: 28px circular avatars, semibold usernames, and muted relative dates,
+updated locally every minute. Full dates are available as tooltips and accessible
+labels. Avatars load from public HTTPS image hosts without a referrer.
 
 Markdown is rendered with the vendored markdown-it browser distribution in
 `public/app/vendor/` (license alongside it), with HTML disabled and only HTTPS

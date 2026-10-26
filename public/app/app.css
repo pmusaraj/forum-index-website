@@ -63,3 +63,14 @@ footer { display: flex; justify-content: space-between; gap: 16px; padding: 28px
 #reader-forum { color: var(--text); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #reader-original { flex-shrink: 0; }
 @media (max-width: 420px) { .reader-toolbar { gap: 8px; font-size: 12px; } .reader-location { gap: 8px; } #reader-back { padding: 10px 8px; } }
+.reader-post { padding: 24px 0; }
+.reader-post + .reader-post { border-top: 1px solid var(--border); }
+.reader-post:first-child { padding-top: 8px; }
+.post-author { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; min-width: 0; line-height: 20px; }
+.post-avatar { position: relative; flex: 0 0 28px; width: 28px; height: 28px; overflow: hidden; border-radius: 50%; color: var(--secondary); }
+.post-avatar svg, .post-avatar img { width: 28px; height: 28px; display: block; }
+.post-avatar img { position: absolute; inset: 0; object-fit: cover; }
+.post-username { font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.post-date { margin-left: auto; flex-shrink: 0; color: var(--secondary); font-size: 12px; font-weight: 400; }
+.post-body > :first-child { margin-top: 0; }
+.post-body > :last-child { margin-bottom: 0; }
