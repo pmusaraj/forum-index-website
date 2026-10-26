@@ -59,10 +59,11 @@ footer { display: flex; justify-content: space-between; gap: 16px; padding: 28px
 .preview-limit p { max-width: 760px; margin: auto; color: #fff; font-size: 12px; line-height: 1.5; }
 
 .reader-location { display: flex; align-items: center; gap: 12px; min-width: 0; }
-#reader-back { flex-shrink: 0; }
+#reader-back { flex-shrink: 0; width: 44px; height: 44px; padding: 10px; border: 0; }
+#reader-back svg { display: block; width: 24px; height: 24px; stroke-width: 2; stroke-linecap: round; }
 #reader-forum { color: var(--text); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #reader-original { flex-shrink: 0; }
-@media (max-width: 420px) { .reader-toolbar { gap: 8px; font-size: 12px; } .reader-location { gap: 8px; } #reader-back { padding: 10px 8px; } }
+@media (max-width: 420px) { .reader-toolbar { gap: 8px; font-size: 12px; } .reader-location { gap: 8px; } }
 .reader-post { padding: 24px 0; }
 .reader-post + .reader-post { border-top: 1px solid var(--border); }
 .reader-post:first-child { padding-top: 8px; }
