@@ -13,26 +13,28 @@
     <script src="/app/app.js" type="module"></script>
   </head>
   <body>
-    <header class="header">
+    <header class="app-header">
+      <div class="header">
       <a href="/" target="_top" aria-label="Forum Index home"><picture><source srcset="/assets/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/assets/logo.svg" width="180" height="48" alt="Forum Index"></picture></a>
+      </div>
+      <nav class="app-nav" aria-label="Subjects"><button id="browse" aria-pressed="true">Main</button><div id="subject-tabs"></div></nav>
+      <div class="reader-toolbar" hidden><button id="reader-back">← Back</button><a id="reader-original" target="_blank" rel="noopener noreferrer">Open on forum ↗</a></div>
     </header>
     <main>
       <h1 class="sr-only">Forum Index discussions</h1>
-      <nav aria-label="Subjects"><button id="browse" aria-pressed="true">Main</button><div id="subject-tabs"></div></nav>
-      <div class="toolbar"><h2 id="heading">Main</h2><div id="subject-filter"><label for="subject">Subject</label><select id="subject"><option value="">All subjects</option></select></div></div>
+      <h2 id="heading" class="sr-only">Main</h2>
       <p id="taxonomy-status" class="muted" role="status"></p>
       <p id="status" role="status" aria-live="polite">Loading discussions…</p>
       <button id="retry" hidden>Try again</button>
       <div id="topics" aria-label="Discussions"></div>
-      <button id="more" class="more" hidden>Load more discussions</button>
       <noscript><p>Enable JavaScript to browse discussions.</p></noscript>
     </main>
     <section id="reader" hidden aria-label="Discussion reader">
-      <div class="reader-toolbar"><button id="reader-back">← Back</button><a id="reader-original" target="_blank" rel="noopener noreferrer">Open on forum ↗</a></div>
       <h2 id="reader-title" tabindex="-1"></h2>
       <p id="reader-status" role="status">Loading discussion…</p>
       <article id="reader-body"></article>
     </section>
     <footer><a target="_top" href="/">Get the mobile app</a><a target="_blank" rel="noopener" href="/privacy/">Privacy policy</a></footer>
+    <aside class="preview-limit" aria-label="Preview limitations"><p>This preview of the app has a limited set of features. App users can bookmark topics, report issues, contribute to the Trending feed, rearrange the subject list bar, and more.</p></aside>
   </body>
 </html>

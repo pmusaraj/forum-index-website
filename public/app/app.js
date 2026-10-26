@@ -2,10 +2,9 @@ import { readerMarkdown } from './markdown.js';
 
 const $ = id => document.getElementById(id);
 let topics = [];
-let page = 0;
-let hasMore = false;
+let selectedSubject = "";
+let selectedSubjectName = "Main";
 let controller;
-let busy = false;
 
 function validTopic(topic) {
   return topic && Number.isSafeInteger(topic.id) && typeof topic.title === 'string';
@@ -26,12 +25,9 @@ function safeURL(value) {
 }
 
 function render() {
-  $('browse').setAttribute('aria-pressed', String(!$('subject').value));
-  for (const button of $('subject-tabs').children) button.setAttribute('aria-pressed', String(button.dataset.subject === $('subject').value));
-  $('heading').textContent = $('subject').value ? $('subject').selectedOptions[0].textContent.trim() : 'Main';
-  $('more').hidden = !hasMore;
-  $('more').disabled = busy;
-  $('more').textContent = busy ? 'Loading…' : 'Load more discussions';
+  $('browse').setAttribute('aria-pressed', String(!selectedSubject));
+  for (const button of $('subject-tabs').children) button.setAttribute('aria-pressed', String(button.dataset.subject === selectedSubject));
+  $('heading').textContent = selectedSubjectName;
   const list = topics;
   $('topics').replaceChildren(...list.map(topic => {
     const article = element('article', 'topic');
@@ -80,33 +76,29 @@ function render() {
 
 }
 
-async function load(reset = false) {
+async function load() {
   controller?.abort();
   const current = new AbortController();
   controller = current;
-  if (reset) { topics = []; page = 0; hasMore = false; }
-  busy = true;
+  topics = [];
   $('retry').hidden = true;
   $('status').textContent = 'Loading discussions…';
   render();
   try {
-    const params = new URLSearchParams({ kind: 'topics', page: String(page + 1) });
-    if ($('subject').value) params.set('subject', $('subject').value);
+    const params = new URLSearchParams({ kind: 'topics', page: '1' });
+    if (selectedSubject) params.set('subject', selectedSubject);
     const response = await fetch(`/api/feed?${params}`, { signal: current.signal });
     if (!response.ok) throw new Error();
     const data = await response.json();
     if (!Array.isArray(data.results)) throw new Error();
-    const ids = new Set(topics.map(topic => topic.id));
-    topics.push(...data.results.filter(validTopic).filter(topic => !ids.has(topic.id)).map(topic => ({ ...topic, feedPage: page + 1, feedSubject: $('subject').value })));
-    page += 1;
-    hasMore = data.hasMore === true;
+    topics = data.results.filter(validTopic).map(topic => ({ ...topic, feedPage: 1, feedSubject: selectedSubject }));
     $('status').textContent = topics.length ? '' : 'No discussions in this subject right now. Try another subject.';
   } catch (error) {
     if (error.name === 'AbortError') return;
     $('status').textContent = 'Could not load discussions. Please try again.';
     $('retry').hidden = false;
   } finally {
-    if (controller === current) { busy = false; render(); }
+    if (controller === current) render();
   }
 }
 
@@ -116,36 +108,28 @@ async function loadSubjects() {
     if (!response.ok) throw new Error();
     const data = await response.json();
     if (!Array.isArray(data.subjects)) throw new Error();
-    const seen = new Set();
     for (const subject of data.subjects) {
       const tab = element('button', '', subject.name);
       tab.dataset.subject = subject.slug;
       tab.setAttribute('aria-pressed', 'false');
       tab.addEventListener('click', () => {
-        $('subject').value = subject.slug;
-        load(true);
+        selectedSubject = subject.slug;
+        selectedSubjectName = subject.name;
+        load();
       });
       $('subject-tabs').append(tab);
-      for (const [item, child] of [[subject, false], ...(subject.subjects || []).map(item => [item, true])]) {
-        if (!item.slug || seen.has(item.slug)) continue;
-        seen.add(item.slug);
-        const option = element('option', '', `${child ? '— ' : ''}${item.name}`);
-        option.value = item.slug;
-        $('subject').append(option);
-      }
+
     }
   } catch {
     $('taxonomy-status').textContent = 'Subject filters are unavailable. You can still browse trending discussions.';
   }
 }
 
-$('browse').addEventListener('click', () => { $('subject').value = ''; load(true); });
-$('subject').addEventListener('change', () => load(true));
-$('more').addEventListener('click', () => load());
+$('browse').addEventListener('click', () => { selectedSubject = ''; selectedSubjectName = 'Main'; load(); });
 $('retry').addEventListener('click', () => load());
 render();
 loadSubjects();
-load(true);
+load();
 
 let readerController;
 let readerTrigger;
@@ -158,6 +142,8 @@ async function openReader(topic, trigger) {
   feedScroll = window.scrollY;
   document.querySelector('main').hidden = true;
   $('reader').hidden = false;
+  document.querySelector('.app-nav').hidden = true;
+  document.querySelector('.reader-toolbar').hidden = false;
   $('reader-title').textContent = topic.title;
   $('reader-original').href = safeURL(topic.url);
   $('reader-status').textContent = 'Loading discussion…';
@@ -191,7 +177,14 @@ async function openReader(topic, trigger) {
 $('reader-back').addEventListener('click', () => {
   readerController?.abort();
   $('reader').hidden = true;
+  document.querySelector('.app-nav').hidden = false;
+  document.querySelector('.reader-toolbar').hidden = true;
   document.querySelector('main').hidden = false;
   window.scrollTo(0, feedScroll);
   readerTrigger?.focus({ preventScroll: true });
 });
+
+// Reserve the exact bottom-bar height, including when text wraps or zoom changes.
+new ResizeObserver(([entry]) => {
+  document.documentElement.style.setProperty('--preview-note-height', `${entry.target.getBoundingClientRect().height}px`);
+}).observe(document.querySelector('.preview-limit'));
