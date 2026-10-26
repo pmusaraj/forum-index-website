@@ -38,6 +38,7 @@ h2 { font-size: 15px; font-weight: 600; margin: 0; }
 #reader { width: min(100% - 32px, 760px); margin: auto; }
 .reader-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0 24px; font-size: 14px; color: var(--accent); }
 #reader-title { font-size: 24px; line-height: 1.25; font-weight: 600; }
+#reader-title:focus { outline: none; }
 #reader-status { font-size: 15px; color: var(--secondary); line-height: 1.5; }
 #reader-status:empty { display: none; }
 #reader-body { font-size: 16px; line-height: 1.65; overflow-wrap: anywhere; padding-top: 12px; }
