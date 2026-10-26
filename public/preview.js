@@ -1,11 +1,11 @@
 (() => {
   const versions = new URLSearchParams(window.location.search).getAll('q');
-  const preview = document.getElementById('live-preview-template');
-  if (versions.length === 1 && versions[0] === 'v1' && preview) {
-    document.querySelector(".preview-wrap").replaceWith(preview.content.cloneNode(true));
-    preview.remove();
-    return;
-  }
+  const showVideo = versions.length === 1 && versions[0] === 'video';
+  const template = document.getElementById(showVideo ? 'video-preview-template' : 'live-preview-template');
+  document.getElementById('homepage-preview').replaceWith(template.content.cloneNode(true));
+  document.getElementById('video-preview-template').remove();
+  document.getElementById('live-preview-template').remove();
+  if (!showVideo) return;
 
   const video = document.querySelector('.app-recording');
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
