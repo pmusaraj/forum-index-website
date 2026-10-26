@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Browse discussions — Forum Index</title>
+    <meta name="description" content="Preview great forum discussions.">
+    <meta name="theme-color" content="#faf6ee" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1c1c1a" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" href="/assets/icon.png">
+    <link rel="stylesheet" href="/app/app.css">
+    <script src="/app/vendor/markdown-it.min.js" defer></script>
+    <script src="/app/app.js" type="module"></script>
+  </head>
+  <body>
+    <header class="header">
+      <a href="/" target="_top" aria-label="Forum Index home"><picture><source srcset="/assets/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/assets/logo.svg" width="180" height="48" alt="Forum Index"></picture></a>
+    </header>
+    <main>
+      <h1 class="sr-only">Forum Index discussions</h1>
+      <nav aria-label="Subjects"><button id="browse" aria-pressed="true">Main</button><div id="subject-tabs"></div></nav>
+      <div class="toolbar"><h2 id="heading">Main</h2><div id="subject-filter"><label for="subject">Subject</label><select id="subject"><option value="">All subjects</option></select></div></div>
+      <p id="taxonomy-status" class="muted" role="status"></p>
+      <p id="status" role="status" aria-live="polite">Loading discussions…</p>
+      <button id="retry" hidden>Try again</button>
+      <div id="topics" aria-label="Discussions"></div>
+      <button id="more" class="more" hidden>Load more discussions</button>
+      <noscript><p>Enable JavaScript to browse discussions.</p></noscript>
+    </main>
+    <section id="reader" hidden aria-label="Discussion reader">
+      <div class="reader-toolbar"><button id="reader-back">← Back</button><a id="reader-original" target="_blank" rel="noopener noreferrer">Open on forum ↗</a></div>
+      <h2 id="reader-title" tabindex="-1"></h2>
+      <p id="reader-status" role="status">Loading discussion…</p>
+      <article id="reader-body"></article>
+    </section>
+    <footer><a target="_top" href="/">Get the mobile app</a><a target="_blank" rel="noopener" href="/privacy/">Privacy policy</a></footer>
+  </body>
+</html>
