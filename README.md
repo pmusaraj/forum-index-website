@@ -8,7 +8,7 @@ Production domain: https://theforumindex.com.
 Run `python3 -m http.server 8080 --directory public` and open http://localhost:8080.
 Edit `public/index.html`, `public/styles.css`, and `public/preview.js` directly; no build is required.
 The logo and icon come from the adjacent `forum-index-app` repository.
-The angled preview plays `public/assets/app-preview.mp4`, an actual iPhone
+At `?q=video`, the angled preview plays `public/assets/app-preview.mp4`, an actual iPhone
 simulator recording of the native app using its curated public-topic fixtures.
 The recording moves through lists and a native Markdown reader, changes between
 light and dark appearance, and returns to the opening list. It is edited for a
@@ -24,10 +24,11 @@ https://play.google.com/apps/testing/com.musaraj.forumindex.
 ## Web app
 
 `/app/` is a buildless web preview with the first page of trending discussions and subject tabs, embedded in place of the homepage recording in a same-origin
-iframe only when the homepage URL has `?q=v1`. Without that exact query value,
-the preview stays in an inert template: no iframe is loaded and no preview API
-requests are made. `/app/` remains directly accessible; this is a rollout switch,
-not access control. The preview has no bookmarks, reporting, accounts, contributions, subject
+iframe by default. Use `?q=video` to show the original recording instead.
+Both variants start in inert templates, so ordinary visits do not load the video,
+and video-mode visits do not load the iframe or call its API. Other query values
+(including the previous `?q=v1`) show the live preview. `/app/` also remains directly
+accessible. The preview has no bookmarks, reporting, accounts, contributions, subject
 reordering, For You feed, or settings. Existing bookmarks from earlier preview
 versions are not read or written; users can clear site data to erase those copies.
 
@@ -47,7 +48,7 @@ only same-origin framing; other pages still disallow framing.
 The reader follows the mobile apps' shared colors (`#FAF6EE` / `#1C1C1A`, teal
 accents), 18px semibold titles, 36px forum icons, underlined subject tabs, and compact
 metadata. The header (subject tabs, or Back controls and the forum name in the reader) stays sticky, and a translucent
-green bottom bar with white text explains the preview limitations. There is no subject dropdown or
+65%-opaque green bottom bar with white text and backdrop blur explains the preview limitations. There is no subject dropdown or
 load-more control. Dark mode follows the system preference. Forum icons load from public
 HTTPS image hosts without a referrer; icons hosted on the backend use a globe
 fallback to avoid browser calls to that host.
