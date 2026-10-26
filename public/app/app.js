@@ -145,6 +145,7 @@ async function openReader(topic, trigger) {
   document.querySelector('.app-nav').hidden = true;
   document.querySelector('.reader-toolbar').hidden = false;
   $('reader-title').textContent = topic.title;
+  $('reader-forum').textContent = topic.forum?.name || 'Forum discussion';
   $('reader-original').href = safeURL(topic.url);
   $('reader-status').textContent = 'Loading discussion…';
   $('reader-body').replaceChildren();
