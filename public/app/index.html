@@ -14,11 +14,8 @@
   </head>
   <body>
     <header class="app-header">
-      <div class="header">
-      <a href="/" target="_top" aria-label="Forum Index home"><picture><source srcset="/assets/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/assets/logo.svg" width="180" height="48" alt="Forum Index"></picture></a>
-      </div>
       <nav class="app-nav" aria-label="Subjects"><button id="browse" aria-pressed="true">Main</button><div id="subject-tabs"></div></nav>
-      <div class="reader-toolbar" hidden><button id="reader-back">← Back</button><a id="reader-original" target="_blank" rel="noopener noreferrer">Open on forum ↗</a></div>
+      <div class="reader-toolbar" hidden><div class="reader-location"><button id="reader-back">← Back</button><span id="reader-forum"></span></div><a id="reader-original" target="_blank" rel="noopener noreferrer">Open on forum ↗</a></div>
     </header>
     <main>
       <h1 class="sr-only">Forum Index discussions</h1>

@@ -2,7 +2,9 @@
   const versions = new URLSearchParams(window.location.search).getAll('q');
   const preview = document.getElementById('live-preview-template');
   if (versions.length === 1 && versions[0] === 'v1' && preview) {
-    preview.replaceWith(preview.content.cloneNode(true));
+    document.querySelector(".preview-wrap").replaceWith(preview.content.cloneNode(true));
+    preview.remove();
+    return;
   }
 
   const video = document.querySelector('.app-recording');
