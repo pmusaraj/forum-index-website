@@ -21,6 +21,69 @@ The Apple button links to the public TestFlight beta. The Google Play button lin
 to the Android beta opt-in page at
 https://play.google.com/apps/testing/com.musaraj.forumindex.
 
+## Web app
+
+`/app/` is a buildless web preview with trending discussions, subject filters,
+and pagination, embedded on the homepage under “Preview App” in a same-origin
+iframe only when the homepage URL has `?q=v1`. Without that exact query value,
+the preview stays in an inert template: no iframe is loaded and no preview API
+requests are made. `/app/` remains directly accessible; this is a rollout switch,
+not access control. The preview has no bookmarks, reporting, accounts, contributions, subject
+reordering, For You feed, or settings. Existing bookmarks from earlier preview
+versions are not read or written; users can clear site data to erase those copies.
+
+Supported forums open in a Markdown reader. `/api/reader` resolves the topic from
+an approved feed page before requesting its HTTPS URL with `Accept: text/markdown`.
+It never accepts an arbitrary target URL, follows redirects, or forwards visitor
+credentials. Responses must be Markdown and at most 512 KiB; successful responses
+are cached for at most one hour. Unsupported forums open externally, and reader
+failures offer an “Open on forum” link. The preview shows the returned page, not
+all subsequent reply pages. Embedded images are shown as their alt text.
+
+Markdown is rendered with the vendored markdown-it browser distribution in
+`public/app/vendor/` (license alongside it), with HTML disabled and only HTTPS
+links enabled. No package install or build step is required. The app's CSP permits
+only same-origin framing; other pages still disallow framing.
+
+The reader follows the mobile apps' shared colors (`#FAF6EE` / `#1C1C1A`, teal
+accents), 18px semibold titles, 36px forum icons, underlined subject tabs, and compact
+metadata. Dark mode follows the system preference. Forum icons load from public
+HTTPS image hosts without a referrer; icons hosted on the backend use a globe
+fallback to avoid browser calls to that host.
+
+Feed requests from the browser only call `/api/feed`. The Pages Function in `functions/api/feed.js`
+calls the public v2 backend API, strips unused fields, and caches successful
+responses with Cloudflare's Cache API for at most 3,600 seconds. Browser responses
+use `no-store`, so a browser cannot extend an edge entry's lifetime. Expired data
+is never served as an error fallback. Cache keys normalize parameters; only
+trending feeds, subject navigation, and pages 1–100 are allowed. Client cookies
+and authorization headers are not forwarded.
+
+This is an on-demand, per-data-center cache, not a global hourly snapshot. Cold
+data centers, eviction, and simultaneous cache misses can cause additional origin
+requests. A scheduled Worker with shared storage would be the next step if a
+strict global backend request budget is needed. GitHub Actions is not required.
+
+### Cloudflare setup
+
+In the existing Pages project's **Settings → Variables and Secrets**, add an
+encrypted secret named `FORUM_API_URL` with the backend HTTPS base URL, without
+`/api/v2` or query parameters. Configure production and preview separately, then
+redeploy. Do not place the value in `public/`, Git, or client JavaScript. Hiding the
+configured URL is not backend authentication; the existing public API remains
+public. The current build command and output directory can stay unchanged.
+Cloudflare discovers `functions/` during the Pages build; `public/_routes.json`
+limits Function invocations to `/api/*`.
+
+For a full local preview, install/use the Cloudflare Wrangler CLI, put
+`FORUM_API_URL="https://your-backend.example"` in a root `.dev.vars` file (ignored
+by Git), then run `npx wrangler pages dev public` and open `/app/` on the printed
+local URL. The Python static server previews markup only; it cannot run the API.
+Run proxy regression tests with `npm test` (Node 20+; no dependencies).
+
+References: [Pages secrets](https://developers.cloudflare.com/pages/functions/bindings/#secrets)
+and [Cache API behavior](https://developers.cloudflare.com/workers/runtime-apis/cache/).
+
 ## Privacy policy
 
 The homepage links to `public/privacy/index.html`, served at `/privacy/`.
