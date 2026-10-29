@@ -3,8 +3,12 @@ import { readerPosts, relativeDate } from './markdown.js';
 const $ = id => document.getElementById(id);
 let topics = [];
 let selectedSubject = "";
-let selectedSubjectName = "Main";
+let selectedSubjectName = "Trending";
 let controller;
+const subjectOrder = new Map([
+  'AI', 'Open Source', 'Jobs', 'Community', 'Creative', 'Automotive', 'Productivity', 'Tech',
+].map((name, index) => [name, index]));
+const subjectLabels = { opensource: 'Open Source', technology: 'Tech' };
 
 function validTopic(topic) {
   return topic && Number.isSafeInteger(topic.id) && typeof topic.title === 'string';
@@ -108,7 +112,13 @@ async function loadSubjects() {
     if (!response.ok) throw new Error();
     const data = await response.json();
     if (!Array.isArray(data.subjects)) throw new Error();
-    for (const subject of data.subjects) {
+    const subjects = data.subjects.map(subject => ({
+      ...subject,
+      name: subjectLabels[subject.name.toLowerCase().replace(/[\s-]/g, '')] || subject.name,
+    }));
+    // Stable sorting keeps the remaining subjects in their feed order after Tech.
+    subjects.sort((a, b) => (subjectOrder.get(a.name) ?? subjectOrder.size) - (subjectOrder.get(b.name) ?? subjectOrder.size));
+    for (const subject of subjects) {
       const tab = element('button', '', subject.name);
       tab.dataset.subject = subject.slug;
       tab.setAttribute('aria-pressed', 'false');
@@ -125,7 +135,7 @@ async function loadSubjects() {
   }
 }
 
-$('browse').addEventListener('click', () => { selectedSubject = ''; selectedSubjectName = 'Main'; load(); });
+$('browse').addEventListener('click', () => { selectedSubject = ''; selectedSubjectName = 'Trending'; load(); });
 $('retry').addEventListener('click', () => load());
 render();
 loadSubjects();
