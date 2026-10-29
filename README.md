@@ -32,13 +32,10 @@ accessible. The preview has no bookmarks, reporting, accounts, contributions, su
 reordering, For You feed, or settings. Existing bookmarks from earlier preview
 versions are not read or written; users can clear site data to erase those copies.
 
-Supported forums open in a Markdown reader. `/api/reader` resolves the topic from
-an approved feed page before requesting its HTTPS URL with `Accept: text/markdown`.
+Topics with `reader_markdown_url` open in a Markdown reader, including server-converted topics. Explicit null opens the original forum; older feeds missing the field retain the `forum.supports_markdown` fallback. The feed proxy exposes only a `reader_source` capability (`native`, `converted`, or null), keeping the converter address server-side. `/api/reader` resolves the topic from an approved feed page before requesting its native URL or the approved topic-specific converter endpoint with `Accept: text/markdown`.
 It never accepts an arbitrary target URL, follows redirects, or forwards visitor
-credentials. Responses must be Markdown and at most 512 KiB; successful responses
-are cached for at most one hour. Unsupported forums open externally, and reader
-failures offer an “Open on forum” link. The preview shows the returned page, not
-all subsequent reply pages. Embedded post images are shown as their alt text. Post headers follow the iOS
+credentials. Responses must be Markdown and at most 512 KiB; successful native responses are cached for at most one hour unless marked private or no-store. Converted content is revalidated on every open. `Retry-After` (seconds or HTTP date) is forwarded on failures and gates further upstream requests through an edge cooldown shared by reader requests to the same origin. As with feed caching, eviction or a different data center can bypass this best-effort cooldown. Unsupported forums open externally, and reader
+failures offer an “Open on forum” link. The preview shows the returned page, not all subsequent reply pages; generated pagination links are removed using the reader URL as their base. “Open on forum” and discussion links keep the original topic URL. Embedded post images are shown as their alt text. Post headers follow the iOS
 reader: 28px circular avatars, semibold usernames, and muted relative dates,
 updated locally every minute. Full dates are available as tooltips and accessible
 labels. Avatars load from public HTTPS image hosts without a referrer.

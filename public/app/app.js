@@ -49,7 +49,7 @@ function render() {
       link.href = url;
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
-      if (topic.forum?.supports_markdown) link.addEventListener('click', event => {
+      if (topic.reader_source === 'native' || topic.reader_source === 'converted') link.addEventListener('click', event => {
         if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
         event.preventDefault();
         openReader(topic, link);

@@ -1,3 +1,5 @@
+import { readerSource } from '../../lib/reader-source.js';
+
 const TTL = 3600;
 
 function publicIcon(value, backend) {
@@ -46,7 +48,7 @@ export async function onRequest({ request, env, waitUntil }) {
   }
 
   // Canonical keys prevent query order and omitted defaults from bypassing the cache.
-  const key = new Request(`${url.origin}/api/feed?version=2&kind=${kind}&subject=${subject}&page=${page}`);
+  const key = new Request(`${url.origin}/api/feed?version=3&kind=${kind}&subject=${subject}&page=${page}`);
   const cached = await caches.default.match(key);
   if (cached) {
     const created = Number(cached.headers.get('X-Feed-Cached-At'));
@@ -75,6 +77,7 @@ export async function onRequest({ request, env, waitUntil }) {
       if (!Array.isArray(body.results)) throw new Error();
       data = { results: body.results.map(topic => ({
         id: topic.id, title: topic.title, url: topic.url, excerpt: topic.excerpt,
+        reader_source: readerSource(topic, new URL(env.FORUM_API_URL)),
         forum: { name: topic.forum?.name, icon_url: publicIcon(topic.forum?.icon_url, upstream), supports_markdown: topic.forum?.supports_markdown === true }, published_at: topic.published_at,
         engagement: { replies: topic.engagement?.replies ?? 0 },
       })), hasMore: Number(page) < 100 && (Number.isInteger(body.total_pages)

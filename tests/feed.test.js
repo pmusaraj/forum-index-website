@@ -98,3 +98,18 @@ test('only exposes HTTPS forum icons outside the backend host', async () => {
   const data = await (await request()).json();
   assert.deepEqual(data.results.map(topic => topic.forum.icon_url), [null, null, null, null, icons[4]]);
 });
+
+test('exposes reader capability without exposing the backend converter URL',async()=>{
+ const base={title:'Topic',url:'https://forum.example/t/123',forum:{supports_markdown:true}};
+ globalThis.fetch=async()=>Response.json({results:[
+  {...base,id:1},
+  {...base,id:2,reader_markdown_url:null},
+  {...base,id:3,reader_markdown_url:base.url},
+  {...base,id:4,forum:{supports_markdown:false},reader_markdown_url:'https://backend.example/api/v2/topics/4/markdown'},
+  {...base,id:5,reader_markdown_url:'https://backend.example/admin'},
+ ]});
+ const data=await (await request()).json();
+ assert.deepEqual(data.results.map(topic=>topic.reader_source),['native',null,'native','converted',null]);
+ assert.ok(!JSON.stringify(data).includes('backend.example'));
+ assert.ok(data.results.every(topic=>!Object.hasOwn(topic,'reader_markdown_url')));
+});
