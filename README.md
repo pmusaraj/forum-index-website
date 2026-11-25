@@ -18,8 +18,8 @@ frame; playback pauses when off screen or in a hidden tab. The JPEG poster also
 provides a still preview when JavaScript or autoplay is unavailable.
 
 The Apple button links to the public TestFlight beta. The Google Play button links
-to the Android beta opt-in page at
-https://play.google.com/apps/testing/com.musaraj.forumindex.
+to the public Android listing at
+https://play.google.com/store/apps/details?id=com.musaraj.forumindex.
 
 ## Web app
 
